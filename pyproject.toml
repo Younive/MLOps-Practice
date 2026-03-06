@@ -6,7 +6,11 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "datasets==1.6.2",
+    "matplotlib>=3.9.4",
     "pytorch-lightning==1.2.10",
     "scikit-learn==0.24.2",
+    "seaborn>=0.13.2",
+    "torchmetrics>=0.2.0",
     "transformers==4.5.1",
+    "wandb>=0.25.0",
 ]
