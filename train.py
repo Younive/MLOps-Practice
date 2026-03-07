@@ -8,8 +8,13 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from data import DataModule
 from model import ColaModel
 
-cola_data = DataModule()
-cola_model = ColaModel()
+import hydra
+from omegaconf.omegaconf import OmegaConf
+import logging
+
+logger = logging.getLogger(__name__)
+
+@hydra.main(version_base=None, config_path="./config", config_name="config")
 
 class SimpleVisualizationLogger(pl.Callback):
     def __init__(self, datamodule):
@@ -36,7 +41,21 @@ class SimpleVisualizationLogger(pl.Callback):
             }
         )
 
-def main():
+def main(cfg):
+    logging.info(OmegaConf.to_yaml(cfg, resolve=True))
+    logger.info(f"using model:{cfg.model_name}")
+    logger.info(f"using tokenizer:{cfg.tokenizer_name}")
+
+    cola_data = DataModule(
+        tokenizer_name=cfg.tokenizer_name,
+        batch_size=cfg.batch_size,
+        max_length=cfg.max_length
+    )
+
+    cola_model = ColaModel(
+        model_name=cfg.model_name
+    )
+
     checkpoint_callback = ModelCheckpoint(
         dirpath="./models",
         monitor="val_acc",
@@ -53,12 +72,16 @@ def main():
         default_root_dir = 'logs',
         gpus = (1 if torch.cuda.is_available() else 0),
         max_epochs = 1,
-        log_every_n_steps = 10,
+        log_every_n_steps = cfg.log_every_n_steps,
+        limit_train_batches = cfg.limit_train_batches,
+        limit_val_batches = cfg.limit_val_batches,
+        deterministic = cfg.deterministic,
         fast_dev_run = True,
         logger = wandb_logger,
         callbacks = [checkpoint_callback, SimpleVisualizationLogger(cola_data), early_stopping_callback]
     )
     trainer.fit(cola_model, cola_data)
+    wandb.finish()
 
 if __name__ == "__main__":
     main()
