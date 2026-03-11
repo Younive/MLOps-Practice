@@ -54,17 +54,21 @@ def main(cfg):
         model_name=cfg.model.name,
     )
 
+    root_dir = hydra.utils.get_original_cwd()
     checkpoint_callback = ModelCheckpoint(
-        dirpath="./models",
+        dirpath=f"{root_dir}/models",
+        filename="best-checkpoint",
         monitor="val_acc",
         mode="min",
     )
+
     early_stopping_callback = EarlyStopping(
         monitor="val_acc",
         patience=3,
         verbose=True,
         mode="min",
     )
+    
     wandb_logger = WandbLogger(project="cola_model", name="cola_run_1")
     trainer = pl.Trainer(
         default_root_dir = 'logs',
