@@ -1,3 +1,0 @@
-processing:
-  - batch_size: 32
-  - max_length: 128
