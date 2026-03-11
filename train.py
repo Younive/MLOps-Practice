@@ -68,12 +68,11 @@ def main(cfg):
         verbose=True,
         mode="min",
     )
-    
+
     wandb_logger = WandbLogger(project="cola_model", name="cola_run_1")
     trainer = pl.Trainer(
-        default_root_dir = 'logs',
         gpus = (1 if torch.cuda.is_available() else 0),
-        max_epochs = 1,
+        max_epochs = cfg.training.max_epochs,
         log_every_n_steps = cfg.training.log_every_n_steps,
         limit_train_batches = cfg.training.limit_train_batches,
         limit_val_batches = cfg.training.limit_val_batches,
