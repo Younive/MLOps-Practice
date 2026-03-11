@@ -20,10 +20,10 @@ class SimpleVisualizationLogger(pl.Callback):
         self.datamodule = datamodule
 
     def on_validation_end(self, trainer, pl_module):
-        val_bacth = next(iter(self.datamodule.val_dataloader()))
-        sentences = val_bacth['sentence']
-        labels = val_bacth['label']
-        outputs = pl_module(val_bacth['input_ids'], val_bacth['attention_mask'])
+        val_batch = next(iter(self.datamodule.val_dataloader()))
+        sentences = val_batch['sentence']
+        labels = val_batch['label']
+        outputs = pl_module(val_batch['input_ids'], val_batch['attention_mask'])
         pred = torch.argmax(outputs.logits, dim=1)
 
         df = pd.DataFrame({
