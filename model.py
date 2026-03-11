@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 import pytorch_lightning as pl
-from transformers import AutoModelFromSequenceClassification
+from transformers import AutoModelForSequenceClassification
 import wandb
 import torchmetrics
 
@@ -10,7 +10,7 @@ class ColaModel(pl.LightningModule):
         super(ColaModel, self).__init__()
         self.save_hyperparameters()
 
-        self.bert = AutoModelFromSequenceClassification.from_pretrained(model_name, num_labels=2)
+        self.bert = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
         self.W = torch.nn.Linear(self.bert.config.hidden_size,2)
         self.num_classes = 2
         self.train_acc_metric = torchmetrics.Accuracy(num_classes=self.num_classes)
