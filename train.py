@@ -42,17 +42,16 @@ class SimpleVisualizationLogger(pl.Callback):
 @hydra.main(version_base=None, config_path="config", config_name="config")
 def main(cfg):
     logging.info(OmegaConf.to_yaml(cfg, resolve=True))
-    logger.info(f"using model:{cfg.model_name}")
-    logger.info(f"using tokenizer:{cfg.tokenizer_name}")
+    logger.info(f"using model:{cfg.model.name}")
+    logger.info(f"using tokenizer:{cfg.model.tokenizer}")
 
     cola_data = DataModule(
-        tokenizer_name=cfg.tokenizer_name,
-        batch_size=cfg.batch_size,
-        max_length=cfg.max_length
+        model_name=cfg.model.tokenizer,
+        batch_size=cfg.processing.batch_size,
     )
 
     cola_model = ColaModel(
-        model_name=cfg.model_name
+        model_name=cfg.model.name,
     )
 
     checkpoint_callback = ModelCheckpoint(
