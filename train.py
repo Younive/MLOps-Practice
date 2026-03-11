@@ -14,8 +14,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-@hydra.main(version_base=None, config_path="./config", config_name="config")
-
 class SimpleVisualizationLogger(pl.Callback):
     def __init__(self, datamodule):
         super().__init__()
@@ -41,6 +39,7 @@ class SimpleVisualizationLogger(pl.Callback):
             }
         )
 
+@hydra.main(version_base=None, config_path="config", config_name="config")
 def main(cfg):
     logging.info(OmegaConf.to_yaml(cfg, resolve=True))
     logger.info(f"using model:{cfg.model_name}")
