@@ -13,8 +13,8 @@ class ColaModel(pl.LightningModule):
         self.bert = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
         self.W = torch.nn.Linear(self.bert.config.hidden_size,2)
         self.num_classes = 2
-        self.train_acc_metric = torchmetrics.Accuracy(num_classes=self.num_classes)
-        self.val_acc_metric = torchmetrics.Accuracy(num_classes=self.num_classes)
+        self.train_acc_metric = torchmetrics.Accuracy()
+        self.val_acc_metric = torchmetrics.Accuracy()
         self.precision_macro_metric = torchmetrics.Precision(num_classes=self.num_classes, average='macro')
         self.recall_macro_metric = torchmetrics.Recall(num_classes=self.num_classes, average='macro')
         self.f1_macro_metric = torchmetrics.F1(num_classes=self.num_classes, average='macro')
