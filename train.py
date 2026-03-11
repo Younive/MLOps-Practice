@@ -74,7 +74,7 @@ def main(cfg):
         limit_train_batches = cfg.training.limit_train_batches,
         limit_val_batches = cfg.training.limit_val_batches,
         deterministic = cfg.training.deterministic,
-        fast_dev_run = True,
+        fast_dev_run = False,
         logger = wandb_logger,
         callbacks = [checkpoint_callback, SimpleVisualizationLogger(cola_data), early_stopping_callback]
     )
