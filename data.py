@@ -28,7 +28,7 @@ class DataModule(pl.LightningDataModule):
             self.train_data = self.train_data.map(self.tokenize_data, batched=True)
             self.train_data.set_format(type='torch', columns=['input_ids', 'attention_mask', 'label'])
             self.val_data = self.val_data.map(self.tokenize_data, batched=True)
-            self.val_data.set_format(type='torch', columns=['input_ids', 'attention_mask', 'label'])
+            self.val_data.set_format(type='torch', columns=['input_ids', 'attention_mask', 'label'], output_all_columns=True)
     
     def train_dataloader(self):
         return torch.utils.data.DataLoader(self.train_data, batch_size=self.batch_size, shuffle=True)
